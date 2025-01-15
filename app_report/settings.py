@@ -61,22 +61,20 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'app_report.wsgi.application'
 
-REMEMBER_ME_DURATION = 604800
-SESSION_COOKIE_AGE = 604800
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'scanner',
-        'USER':'admin',
-        'PASSWORD':'password',
-        'HOST':'localhost',
-        'PORT':'3306', 
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'scanner',
+#         'USER':'admin',
+#         'PASSWORD':'password',
+#         'HOST':'localhost',
+#         'PORT':'3306', 
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -111,14 +109,10 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
-
 MEDIA_URL = 'uploads/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'uploads')
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

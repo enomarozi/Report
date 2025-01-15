@@ -18,7 +18,7 @@
                 <h5 class="mb-0">Command Scanner</h5>
             </div>
             <div class="card-body">
-                <form method="GET">
+                <form method="GET" action="{% url 'scanner' %}">
                     <div class="mb-3">
                         <input class="form-control" type="text" name="param_" placeholder="Command" required>
                     </div>
