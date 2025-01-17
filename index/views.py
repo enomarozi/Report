@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .forms import Scanning
 import os
 
@@ -18,6 +18,17 @@ def scanner(request):
 			return HttpResponse(f"Invalid from data",status=400)
 
 	return HttpResponse("Method not allowed", status=405)
+
+def data_result(request):
+	files = os.listdir('outputs')
+	result = []
+	for file in files:
+		file_name, file_extension = os.path.splitext(file)
+		result.append({
+			'name':file_name,
+			'extension':file_extension[1:],
+			}) 
+	return JsonResponse(result, safe=False)
 
 
 
