@@ -16,6 +16,12 @@
     .table{
         width: 50%;
     }
+    .custom-alert {
+        font-size: 14px;
+        padding: 10px;
+        margin-bottom: 10px;
+        text-align: center;
+    }
 </style>
 
 <body class="bg-light">
@@ -37,6 +43,14 @@
             </div>
         </div>
     </div>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     
     <table id="statusTable" class="table table-striped">
@@ -76,9 +90,7 @@
             ]
         });
     });
-    </script>
-
-    
+    </script>    
 
     
 </body>
