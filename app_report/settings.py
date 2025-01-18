@@ -71,7 +71,7 @@ WSGI_APPLICATION = 'app_report.wsgi.application'
 #         'NAME': 'scanner',
 #         'USER':'admin',
 #         'PASSWORD':'password',
-#         'HOST':'localhost',
+#         'HOST':'db',
 #         'PORT':'3306', 
 #     }
 # }
