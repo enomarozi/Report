@@ -13,14 +13,25 @@
 	.scanform{
 		margin-top: 40px;
 	}
+    .custom-success{
+        margin: 1%;
+        background-color: transparent;
+        border: none;
+        text-align: center;
+    }
     .table{
         width: 50%;
     }
-    .custom-alert {
-        font-size: 14px;
-        padding: 10px;
-        margin-bottom: 10px;
-        text-align: center;
+    .card-table-color{
+        width: 60%;
+        margin: 2% 20% 0 20%;
+        padding: 1% 0 1% 0;
+        background-color: #ebf4f7;
+        border-radius: 8px;
+    }
+    .card-table{
+        width: 90%;
+        margin: 0 5% 0 5%;
     }
 </style>
 
@@ -43,26 +54,22 @@
             </div>
         </div>
     </div>
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-success">
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endif %}
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    
-    <table id="statusTable" class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">No</th>
-                <th scope="col">Nama</th>
-                <th scope="col">Extension</th>
-                <th scope="col">Action</th>
-            </tr>
-        </thead>
-    </table>
+    <div class='card-table-color'>
+        <div class='card-table'>
+            <table id="statusTable" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Nama</th>
+                        <th scope="col">Extension</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.11/js/jquery.dataTables.min.js"></script>
@@ -82,16 +89,55 @@
                 { data: 'name', orderable: false },
                 { data: 'extension', orderable: false },
                 { data: null, orderable: false, render: function(data, type, row) {
+                    let fileNameWithExtension = `${row.name}.${row.extension}`;
                     return `
-                        <a class="btn btn-success btn-sm">Analisa</a>
-                        <a class="btn btn-danger btn-sm">Delete</a>
+                        <a class="btn btn-success btn-sm convertBtn" style="min-width: 100px; text-align: center;">Convert</a>
+                        <a class="btn btn-primary btn-sm" style="min-width: 100px; text-align: center;" href="/openFile/${fileNameWithExtension}" target="_blank">Open</a>
                     `;
                 }}
             ]
         });
     });
-    </script>    
+    </script>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success custom-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
 
-    
+    <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Convert</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li>JPG</li>
+                        <li>PNG</li>
+                        <li>BMP</li>
+                        <li>GIF</li>
+                        <li>PCAP</li>
+                        <li>PCAPNG</li>
+                        <li>RAR</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const convertBtns = document.querySelectorAll('.convertBtn');
+        convertBtns.forEach(function(convertBtn) {
+            const myModal = new bootstrap.Modal(document.getElementById('myModal'));
+            console.log(convert);
+            convert.addEventListener('click', function() {
+                myModal.show();
+            });
+        });
+    </script> 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
