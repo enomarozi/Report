@@ -25,13 +25,11 @@ def openFile(request, param):
 	type_ = param.split('.') 
 	file_path = os.path.join('outputs',param)
 	if os.path.exists(file_path):
-		with open(file_path, 'r') as file:
+		with open(file_path, 'r', encoding="utf-8") as file:
 			file_content = file.read()
 
 		if type_[1] == "html":
 			return HttpResponse(file_content, content_type='text/html')
-		elif type_[1] == "xml":
-			return HttpResponse(file_content, content_type='application/xml')
 		elif type_[1] == "json":
 			return HttpResponse(file_content, content_type='application/json')
 	else:
