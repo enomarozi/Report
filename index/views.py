@@ -17,8 +17,9 @@ def scanner(request):
 			command = form.cleaned_data.get('command')
 			os.system(command)
 			messages.success(request, "Scanning Selesai")
+			return redirect('index')
 		else:
-			return HttpResponse(f"Invalid from data",status=400)
+			return redirect('index')
 
 	return render(request, 'index.html',{'form':form})
 
