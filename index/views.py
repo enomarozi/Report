@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from .forms import Scanning
 from django.contrib import messages
 from django.urls import reverse
+from .forms import Scanning
+from .views_convert import *
 import os, re
 
 def index(request):
@@ -36,10 +37,23 @@ def openFile(request, param):
 		return HttpResponse("File not found.",status=404)
 
 def convertFile(request, param):
-	print(param)
+	if os.name == "nt":
+		xslt_file = "C:/Program Files (x86)/Nmap/nmap.xsl"
+	elif os.name == "posix":
+		xslt_file = "C:/Program Files (x86)/Nmap/nmap.xsl"
+
+	file_path = "outputs/"+param
+	if os.path.exists(file_path):
+		extention_html = xml_to_html(file_path, xslt_file)
+		json = "outputs/"+param.replace("xml","json")
+		extention_json = xml_to_json(file_path)
+
+	# os.system(f"rm {file_path}")
+	messages.success(request, "Convert Selesai")
+	return redirect('index')
 
 def deleteFile(request, param):
-	ex_ = os.system("rm outputs/"+param)
+	ex_ = os.system(f"rm outputs/{file_path}")
 	if ex_ == 0:
 		result = f'Delete File {param} is Successfully!'
 	messages.success(request, result)

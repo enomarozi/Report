@@ -14,8 +14,8 @@
 		margin-top: 40px;
 	}
     .custom-success{
-        margin: 1%;
-        background-color: transparent;
+        width: 15%;
+        margin: 1% 42.5% 0 42.5%;
         border: none;
         text-align: center;
     }
@@ -90,17 +90,20 @@
                 { data: 'extension', orderable: false },
                 { data: null, orderable: false, render: function(data, type, row) {
                     let fileNameWithExtension = `${row.name}.${row.extension}`;
-                    let actButton;
                     let class_;
                     if(row.extension == "xml"){
-                        actButton = "Convert"
+                        actButton = "Convert";
+                        actHref = "/convertFile/"+fileNameWithExtension;
                         class_ = "btn-success"
+                        target_ = "_self"
                     }else{
                         actButton = "Open"
+                        actHref = "/openFile/"+fileNameWithExtension;
                         class_ = "btn-primary"
+                        target_ = "_blank"
                     }
                     return `
-                        <a class="btn ${class_} btn-sm" style="min-width: 100px; text-align: center;" href="/openFile/${fileNameWithExtension}" target="_blank">${actButton}</a>
+                        <a class="btn ${class_} btn-sm" style="min-width: 100px; text-align: center;" href="${actHref}" target="${target_}">${actButton}</a>
                     `;
                 }}
             ]
