@@ -41,7 +41,7 @@ def convertFile(request, param):
 	if os.name == "nt":
 		xslt_file = "C:/Program Files (x86)/Nmap/nmap.xsl"
 	elif os.name == "posix":
-		xslt_file = "C:/Program Files (x86)/Nmap/nmap.xsl"
+		xslt_file = "/usr/share/nmap/nmap.xsl"
 
 	file_path = "outputs/"+param
 	if os.path.exists(file_path):
