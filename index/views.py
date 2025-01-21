@@ -15,8 +15,12 @@ def scanner(request):
 	if request.method == "GET":
 		if form.is_valid():
 			command = form.cleaned_data.get('command')
-			os.system(command)
-			messages.success(request, "Scanning Selesai")
+			if validation(command) == True:
+				os.system(command)
+				message = "Scanning Selesai"
+			else:
+				message = "Maaf, Command tidak dizinkan!!"
+			messages.success(request, message)
 			return redirect('index')
 		else:
 			return redirect('index')
@@ -49,16 +53,26 @@ def convertFile(request, param):
 		json = "outputs/"+param.replace("xml","json")
 		extention_json = xml_to_json(file_path)
 
-	# os.system(f"rm {file_path}")
 	messages.success(request, "Convert Selesai")
 	return redirect('index')
 
 def deleteFile(request, param):
-	ex_ = os.system(f"rm outputs/{file_path}")
+	ex_ = os.system(f"rm outputs/{param}")
 	if ex_ == 0:
 		result = f'Delete File {param} is Successfully!'
 	messages.success(request, result)
 	return HttpResponseRedirect(reverse('index'))
+
+def validation(command):
+	array_block = ["|","&"]
+	if "nmap" in command:
+		for bl in array_block:
+			if bl not in command:
+				return True			
+			else:
+				return False
+	else:
+		return False
 
 def data_result(request):
 	files = os.listdir('outputs')
