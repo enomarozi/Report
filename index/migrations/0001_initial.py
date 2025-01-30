@@ -12,12 +12,11 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='ImageFile',
+            name='OutputFiles',
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False)),
                 ('name', models.CharField(max_length=255)),
-                ('size', models.CharField(max_length=20)),
-                ('format', models.CharField(max_length=6)),
+                ('date', models.DateTimeField()),
             ],
             options={
                 'db_table': 'uploads',
