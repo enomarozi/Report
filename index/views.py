@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
+from django.utils.timezone import now
 from django.contrib import messages
 from django.urls import reverse
 from .forms import Scanning
+from .models import OutputFiles
 from .views_convert import *
 import os, re
 
@@ -16,7 +18,9 @@ def scanner(request):
 		if form.is_valid():
 			command = form.cleaned_data.get('command')
 			if validation(command) == True:
-				os.system(command)
+				nama = command.split("outputs/")[1].replace(' ','')
+				saveFiles = OutputFiles(name=nama,date=now())
+				saveFiles.save()
 				message = "Scanning Selesai"
 			else:
 				message = "Maaf, Command tidak dizinkan!!"
