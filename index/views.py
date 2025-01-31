@@ -18,6 +18,7 @@ def scanner(request):
 		if form.is_valid():
 			command = form.cleaned_data.get('command')
 			if validation(command) == True:
+				os.system(command)
 				nama = command.split("outputs/")[1].replace(' ','')
 				saveFiles = OutputFiles(name=nama,date=now())
 				saveFiles.save()
@@ -61,6 +62,7 @@ def convertFile(request, param):
 	return redirect('index')
 
 def deleteFile(request, param):
+	delete_files = OutputFiles.objects.filter(name=param).delete()
 	ex_ = os.system(f"rm outputs/{param}")
 	if ex_ == 0:
 		result = f'Delete File {param} is Successfully!'
@@ -82,8 +84,9 @@ def data_result(request):
 	files = os.listdir('outputs')
 	result = []
 	extension_allow = ["xml","html","json"]
-	for file in files:
-		file_name, file_extension = file.split('.')
+	output_files = OutputFiles.objects.all().order_by("-date").values("name")
+	for file in output_files:
+		file_name, file_extension = file['name'].split('.')
 		if file_extension in extension_allow:
 			result.append({
 				'name':file_name,
