@@ -68,7 +68,7 @@ def analisaFile(request, param):
 	dict_ = {}
 	if len(data['nmaprun']['hosthint']) <= 3:
 		address = data['nmaprun']['host']['address']['@addr']
-		result = [data['nmaprun']['host']['ports']['port'][i]['@portid'] for i in range(len(data['nmaprun']['host']['ports']['port']))]
+		result = ', '.join([data['nmaprun']['host']['ports']['port'][i]['@portid'] for i in range(len(data['nmaprun']['host']['ports']['port']))])
 		dict_[address] = result
 
 	else:
