@@ -61,6 +61,23 @@ def convertFile(request, param):
 	messages.success(request, "Convert Selesai")
 	return redirect('index')
 
+def analisaFile(request, param):
+	file_path = os.path.join('outputs',param)
+	with open(file_path,'r') as file:
+		data = json.load(file)
+	dict_ = {}
+	if len(data['nmaprun']['hosthint']) <= 3:
+		address = data['nmaprun']['host']['address']['@addr']
+		result = [data['nmaprun']['host']['ports']['port'][i]['@portid'] for i in range(len(data['nmaprun']['host']['ports']['port']))]
+		dict_[address] = result
+
+	else:
+		for i in data['nmaprun']['host']:
+			address = i['address']['@addr']
+			result = ', '.join([i['ports']['port'][j]['@portid'] for j in range(len(i['ports']['port']))])
+			dict_[address] = result
+	return render(request, 'analisa.html',{'analisa':dict_}) 
+
 def deleteFile(request, param):
 	delete_files = OutputFiles.objects.filter(name=param).delete()
 	ex_ = os.system(f"rm outputs/{param}")

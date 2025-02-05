@@ -97,8 +97,14 @@
                         class_ = "btn-success"
                         target_ = "_self"
                     }else{
-                        actButton = "Open"
-                        actHref = "/openFile/"+fileNameWithExtension;
+                        if(row.extension == "json"){
+                            actButton = "Analisa"
+                            actHref = "/analisaFile/"+fileNameWithExtension;
+                        }
+                        else{
+                            actButton = "Open"
+                            actHref = "/openFile/"+fileNameWithExtension;
+                        }
                         class_ = "btn-primary"
                         target_ = "_blank"
                     }
