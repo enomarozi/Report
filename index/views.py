@@ -76,7 +76,10 @@ def analisaFile(request, param):
 			for i in data['nmaprun']['host']:
 				address = i['address']['@addr']
 				if "port" in i["ports"]:
-					result = ', '.join([i['ports']['port'][j]['@portid'] for j in range(len(i['ports']['port']))])
+					if type(i['ports']['port']) == dict:
+						result = i['ports']['port']['@portid']
+					elif type(i['ports']['port']) == list:
+						result = ', '.join([i['ports']['port'][j]['@portid'] for j in range(len(i['ports']['port']))])
 				else:
 					result = "Down / No Port Active"
 				dict_[address] = result
