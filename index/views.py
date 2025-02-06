@@ -66,16 +66,20 @@ def analisaFile(request, param):
 	with open(file_path,'r') as file:
 		data = json.load(file)
 	dict_ = {}
-	if len(data['nmaprun']['hosthint']) <= 3:
-		address = data['nmaprun']['host']['address']['@addr']
-		result = ', '.join([data['nmaprun']['host']['ports']['port'][i]['@portid'] for i in range(len(data['nmaprun']['host']['ports']['port']))])
-		dict_[address] = result
-
-	else:
-		for i in data['nmaprun']['host']:
-			address = i['address']['@addr']
-			result = ', '.join([i['ports']['port'][j]['@portid'] for j in range(len(i['ports']['port']))])
+	if "hosthint" in data["nmaprun"]:
+		if len(data['nmaprun']['hosthint']) <= 3:
+			address = data['nmaprun']['host']['address']['@addr']
+			result = ', '.join([data['nmaprun']['host']['ports']['port'][i]['@portid'] for i in range(len(data['nmaprun']['host']['ports']['port']))])
 			dict_[address] = result
+
+		else:
+			for i in data['nmaprun']['host']:
+				address = i['address']['@addr']
+				if "port" in i["ports"]:
+					result = ', '.join([i['ports']['port'][j]['@portid'] for j in range(len(i['ports']['port']))])
+				else:
+					result = "Down / No Port Active"
+				dict_[address] = result
 	return render(request, 'analisa.html',{'analisa':dict_}) 
 
 def deleteFile(request, param):
