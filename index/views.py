@@ -18,6 +18,7 @@ def scanner(request):
 		if form.is_valid():
 			command = form.cleaned_data.get('command')
 			if validation(command) == True:
+				print(command.split(' '))
 				os.system(command)
 				nama = command.split("outputs/")[1].replace(' ','')
 				saveFiles = OutputFiles(name=nama,date=now())
@@ -66,6 +67,7 @@ def analisaFile(request, param):
 	with open(file_path,'r') as file:
 		data = json.load(file)
 	dict_ = {}
+<<<<<<< HEAD
 	if "hosthint" in data["nmaprun"]:
 		if len(data['nmaprun']['hosthint']) <= 3:
 			address = data['nmaprun']['host']['address']['@addr']
@@ -83,13 +85,26 @@ def analisaFile(request, param):
 				else:
 					result = "Down / No Port Active"
 				dict_[address] = result
+=======
+	if len(data['nmaprun']['hosthint']) <= 3:
+		address = data['nmaprun']['host']['address']['@addr']
+		result = ', '.join([data['nmaprun']['host']['ports']['port'][i]['@portid'] for i in range(len(data['nmaprun']['host']['ports']['port']))])
+		dict_[address] = result
+
+	else:
+		for i in data['nmaprun']['host']:
+			address = i['address']['@addr']
+			result = ', '.join([i['ports']['port'][j]['@portid'] for j in range(len(i['ports']['port']))])
+			dict_[address] = result
+>>>>>>> 159bc4dbd8d99be2d510890f7290ac9b4c3be034
 	return render(request, 'analisa.html',{'analisa':dict_}) 
 
 def deleteFile(request, param):
-	delete_files = OutputFiles.objects.filter(name=param).delete()
-	ex_ = os.system(f"rm outputs/{param}")
+	name_file = OutputFiles.objects.get(id=param)
+	delete_files = OutputFiles.objects.filter(id=param).delete()
+	ex_ = os.system(f"rm outputs/{name_file.name}")
 	if ex_ == 0:
-		result = f'Delete File {param} is Successfully!'
+		result = f'Delete File {name_file.name} is Successfully!'
 	messages.success(request, result)
 	return HttpResponseRedirect(reverse('index'))
 
@@ -108,13 +123,17 @@ def data_result(request):
 	files = os.listdir('outputs')
 	result = []
 	extension_allow = ["xml","html","json"]
-	output_files = OutputFiles.objects.all().order_by("-date").values("name")
+	output_files = OutputFiles.objects.all().order_by("-date").values("id","name")
 	for file in output_files:
-		file_name, file_extension = file['name'].split('.')
+		if len(file['name'].split('.')) == 2:
+			file_name, file_extension = file['name'].split('.')
+		else:
+			file_name, file_extension = [file['name'],"null"]
 		if file_extension in extension_allow:
 			result.append({
 				'name':file_name,
 				'extension':file_extension,
+				'id':file['id']
 			}) 
 	return JsonResponse(result, safe=False)
 
