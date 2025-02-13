@@ -12,7 +12,8 @@ def xml_to_html(file_path, xslt_file):
 	html_tree = transform(xml_tree)
 
 	filename = file_path.replace("xml","html")
-	saveFiles = OutputFiles(name=filename,date=now())
+	nama = filename.split("outputs/")[1].replace(' ','')
+	saveFiles = OutputFiles(name=nama,date=now())
 	saveFiles.save()
 	with open(filename, "wb") as f:
 		f.write(etree.tostring(html_tree, pretty_print=True))
@@ -24,7 +25,8 @@ def xml_to_json(file_path):
 	xml_dict = xmltodict.parse(xml_string)
 	json_string = json.dumps(xml_dict, indent=4)
 	filename = file_path.replace("xml","json")
-	saveFiles = OutputFiles(name=filename,date=now())
+	nama = filename.split("outputs/")[1].replace(' ','')
+	saveFiles = OutputFiles(name=nama,date=now())
 	saveFiles.save()
 	with open(filename, "w") as f:
 		f.write(json_string)

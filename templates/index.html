@@ -97,14 +97,20 @@
                         class_ = "btn-success"
                         target_ = "_self"
                     }else{
-                        actButton = "Open"
-                        actHref = "/openFile/"+fileNameWithExtension;
+                        if(row.extension == "json"){
+                            actButton = "Analisa"
+                            actHref = "/analisaFile/"+fileNameWithExtension;
+                        }
+                        else{
+                            actButton = "Open"
+                            actHref = "/openFile/"+fileNameWithExtension;
+                        }
                         class_ = "btn-primary"
                         target_ = "_blank"
                     }
                     return `
                         <a class="btn ${class_} btn-sm" style="min-width: 100px; text-align: center;" href="${actHref}" target="${target_}">${actButton}</a>
-                        <a class="btn btn-danger btn-sm" style="min-width: 100px; text-align: center;" href="/deleteFile/${fileNameWithExtension}">Delete</a>
+                        <a class="btn btn-danger btn-sm" style="min-width: 100px; text-align: center;" href="/deleteFile/${row.id}">Delete</a>
                     `;
                 }}
             ]
