@@ -67,7 +67,6 @@ def analisaFile(request, param):
 	with open(file_path,'r') as file:
 		data = json.load(file)
 	dict_ = {}
-<<<<<<< HEAD
 	if "hosthint" in data["nmaprun"]:
 		if len(data['nmaprun']['hosthint']) <= 3:
 			address = data['nmaprun']['host']['address']['@addr']
@@ -85,7 +84,6 @@ def analisaFile(request, param):
 				else:
 					result = "Down / No Port Active"
 				dict_[address] = result
-=======
 	if len(data['nmaprun']['hosthint']) <= 3:
 		address = data['nmaprun']['host']['address']['@addr']
 		result = ', '.join([data['nmaprun']['host']['ports']['port'][i]['@portid'] for i in range(len(data['nmaprun']['host']['ports']['port']))])
@@ -96,7 +94,6 @@ def analisaFile(request, param):
 			address = i['address']['@addr']
 			result = ', '.join([i['ports']['port'][j]['@portid'] for j in range(len(i['ports']['port']))])
 			dict_[address] = result
->>>>>>> 159bc4dbd8d99be2d510890f7290ac9b4c3be034
 	return render(request, 'analisa.html',{'analisa':dict_}) 
 
 def deleteFile(request, param):
