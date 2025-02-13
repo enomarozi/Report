@@ -6,7 +6,7 @@ from django.urls import reverse
 from .forms import Scanning
 from .models import OutputFiles
 from .views_convert import *
-import os, re
+import os
 
 def index(request):
 	form = Scanning()
