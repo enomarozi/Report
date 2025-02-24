@@ -90,10 +90,22 @@ def analisaFile(request, param):
 		dict_[address] = result
 
 	else:
+		result = {}
 		for i in data['nmaprun']['host']:
 			address = i['address']['@addr']
-			result = ', '.join([i['ports']['port'][j]['@portid'] for j in range(len(i['ports']['port']))])
+			if type(i['ports']['extraports']) == dict:
+				if int(i['ports']['extraports']['@count']) <= 1000:
+					result[i['ports']['extraports']['@state']] = i['ports']['extraports']['@count']
+					if "port" in i['ports']:
+						result["Open"] = ', '.join([i['ports']['port'][j]['@portid'] for j in range(len(i['ports']['port']))])
+			elif type(i['ports']['extraports']) == list:
+				open_ = i['ports']['port']['@portid']
+				for j in range(len(i['ports']['extraports'])):
+					result[i['ports']['extraports'][j]['@state']] = i['ports']['extraports'][j]['@count']
+				
+				result["Open"] = open_
 			dict_[address] = result
+			result = {}
 	return render(request, 'analisa.html',{'analisa':dict_}) 
 
 def deleteFile(request, param):

@@ -24,7 +24,11 @@
                 {% for ip,ports in analisa.items %}
                     <tr>
                         <td>{{ ip }}</td>
-                        <td>{{ ports }}</td>
+                        <td>
+                        {% for status,port in ports.items %}
+                            {{ status }} : {{ port }}<br>
+                        {% endfor %}
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
