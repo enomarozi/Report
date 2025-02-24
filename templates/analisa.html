@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,11 +21,7 @@
                 </tr>
             </thead>
             <tbody>
-<<<<<<< HEAD
                 {% for ip,ports in analisa.items %}
-=======
-                {% for ip,ports,id in analisa.items %}
->>>>>>> 159bc4dbd8d99be2d510890f7290ac9b4c3be034
                     <tr>
                         <td>{{ ip }}</td>
                         <td>{{ ports }}</td>
