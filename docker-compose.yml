@@ -17,7 +17,7 @@ services:
 
   web:
     build: .
-    command: gunicorn app_report.wsgi:application --bind 0.0.0.0:8000 --workers 4 --threads 2 --timeout 420
+    command: gunicorn app_report.wsgi:application --bind 0.0.0.0:8000 --workers 4 --threads 2 --timeout 660
     volumes:
       - ./static:/app/static
       - ./outputs:/app/outputs

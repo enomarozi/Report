@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
+from django.core.exceptions import ValidationError
 from django.utils.timezone import now
 from django.contrib import messages
 from django.urls import reverse
@@ -7,6 +8,7 @@ from .forms import Scanning
 from .models import OutputFiles
 from .views_convert import *
 import os
+import hashlib
 
 def index(request):
 	form = Scanning()
@@ -18,10 +20,9 @@ def scanner(request):
 		if form.is_valid():
 			command = form.cleaned_data.get('command')
 			if validation(command) == True:
-				print(command.split(' '))
 				os.system(command)
 				nama = command.split("outputs/")[1].replace(' ','')
-				saveFiles = OutputFiles(name=nama,date=now())
+				saveFiles = OutputFiles(name=nama,date=now(),md5check=checksum_file(nama))
 				saveFiles.save()
 				message = "Scanning Selesai"
 			else:
@@ -112,8 +113,7 @@ def deleteFile(request, param):
 	name_file = OutputFiles.objects.get(id=param)
 	delete_files = OutputFiles.objects.filter(id=param).delete()
 	ex_ = os.system(f"rm outputs/{name_file.name}")
-	if ex_ == 0:
-		result = f'Delete File {name_file.name} is Successfully!'
+	result = f'Delete File {name_file.name} is Successfully!'
 	messages.success(request, result)
 	return HttpResponseRedirect(reverse('index'))
 
@@ -128,12 +128,31 @@ def validation(command):
 	else:
 		return False
 
+def syncron(request):
+	for i in os.listdir("outputs"):
+		checksum_file(i)
+	message = "Syncronfile Selesai"
+	messages.success(request, message)
+	return redirect('index')
+
+def checksum_file(file):
+	md5hash = hashlib.md5()
+	with open("outputs/"+file,"rb") as f:
+		for chunk in iter(lambda: f.read(4096), b""):
+			md5hash.update(chunk)
+	if OutputFiles.objects.filter(md5check=md5hash.hexdigest()).exists():
+		pass
+	else:
+		saveFiles = OutputFiles(name=file,date=now(),md5check=md5hash.hexdigest())
+		saveFiles.save()
+
 def data_result(request):
 	files = os.listdir('outputs')
 	result = []
-	extension_allow = ["xml","html","json"]
+	extension_allow = ["xml","html","json","null"]
 	output_files = OutputFiles.objects.all().order_by("-date").values("id","name")
 	for file in output_files:
+		print(file)
 		if len(file['name'].split('.')) == 2:
 			file_name, file_extension = file['name'].split('.')
 		else:

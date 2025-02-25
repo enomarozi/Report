@@ -15,4 +15,4 @@ ENV PYTHONUNBUFFERED 1
 
 EXPOSE 8000
 
-CMD ["gunicorn","app_report.wsgi:application","--bind","0.0.0.0:80","workers","4","--threads","2","--timeout","420"]
+CMD ["gunicorn","app_report.wsgi:application","--bind","0.0.0.0:80","workers","4","--threads","2","--timeout","660"]

@@ -47,8 +47,9 @@
                     <div class="mb-3">
                         {{ form.command }}
                     </div>
-                    <div class="text-center">
-                        <input class="btn btn-primary" type="submit" name="scan" value="SCAN">
+                    <div class="text-center d-flex">
+                        <input class="btn btn-primary w-50" type="submit" name="scan" value="SCAN">
+                        <a href="{% url 'syncron' %}"class="btn btn-success w-50 ms-2">Syncron File</a>
                     </div>
                 </form>
             </div>
@@ -117,6 +118,7 @@
         });
     });
     </script>
+
     {% if messages %}
         {% for message in messages %}
             <div class="alert alert-success custom-success">

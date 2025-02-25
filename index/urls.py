@@ -10,4 +10,5 @@ urlpatterns = [
 	path('deleteFile/<str:param>/', views.deleteFile, name='deleteFile'),
 	path('deleteFile/<int:param>/', views.deleteFile, name='deleteFile'),
 	path('data_result/', views.data_result, name='data_result'),
+	path('syncron/', views.syncron, name='syncron'),
 ]
