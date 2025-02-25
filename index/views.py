@@ -8,7 +8,6 @@ from .forms import Scanning
 from .models import OutputFiles
 from .views_convert import *
 import os
-import hashlib
 
 def index(request):
 	form = Scanning()
