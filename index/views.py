@@ -66,6 +66,9 @@ def analisaFile(request, param):
 	with open(file_path,'r') as file:
 		data = json.load(file)
 	dict_ = {}
+	title_ = {}
+	title_['Arguments'] = data['nmaprun']['@args']
+	title_['Date'] = data['nmaprun']['@startstr']
 	if "hosthint" not in data["nmaprun"]:
 		dict_["Command"] = data["nmaprun"]["@args"]
 		if "@errormsg" in data['nmaprun']['runstats']['finished']:
@@ -91,8 +94,11 @@ def analisaFile(request, param):
 				dict_[address] = result
 				result = {}
 		elif type(data['nmaprun']['host']) == dict:
-			print(data['nmaprun']['host']['ports']['port'])
-	return render(request, 'analisa.html',{'analisa':dict_}) 
+			address = data['nmaprun']['hosthint']['address']['@addr']
+			open_ = ', '.join([data['nmaprun']['host']['ports']['port'][i]['@portid'] for i in range(len(data['nmaprun']['host']['ports']['port']))])
+			result["Open"] = open_
+			dict_[address] = result
+	return render(request, 'analisa.html',{'analisa':dict_,'title':title_}) 
 
 def deleteFile(request, param):
 	name_file = OutputFiles.objects.get(id=param)
@@ -119,7 +125,6 @@ def data_result(request):
 	extension_allow = ["xml","html","json","null"]
 	output_files = OutputFiles.objects.all().order_by("-date").values("id","name")
 	for file in output_files:
-		print(file)
 		if len(file['name'].split('.')) == 2:
 			file_name, file_extension = file['name'].split('.')
 		else:
